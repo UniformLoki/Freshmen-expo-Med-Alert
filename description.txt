@@ -1,0 +1,30 @@
+Team members:
+Elia Browning
+Rachel Dahl
+Joseph Matherne
+Summary:
+A system that sets off an alarm to remind people to take medications and can detect if they have been taken. There are two versions, the At-Home Edition and the Travel Edition. The At-Home Edition uses a weighted plate to detect if pills have been taken. The Travel Edition uses a contact sensor in the lid of the bottle to recognize if the bottle has been opened, but it can’t detect if pills have been taken out.
+Tasks:
+-research sensors
+-come up with design for the GUI
+-SolidWorks model for travel edition
+-make initial prototypes
+-Documentation for weight pad
+-research how to wirelessly transmit sensor data
+-create a Medicine class the user can instantiate
+-set up alarm/notification system
+-class diagram?
+-style guide
+-make readme and .gitignore files
+-set up streak feature
+-write initial sensor reading code for each edition
+-test prototype
+-iterate designs
+-repeat the last 2 steps until it works
+-de-spaghetti code
+GPIO:
+The scale on the At-Home edition could be directly attached to an Arduino or the GPIO pins of a Raspberry Pi/Potato. For mobility, the Travel Edition would need to transmit sensor data wirelessly to the system running the GUI.
+GUI:
+The GUI would allow users to set up different schedules for each of their medications, calibrate sensors, and edit or dismiss alarms. It would also have a streak feature like Duolingo to assist with motivation.
+GitHub Repository:
+This project's GitHub repository is located at: https://github.com/UniformLoki/Freshmen-expo-Med-Alert
