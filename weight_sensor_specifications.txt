@@ -1,0 +1,12 @@
+Requirements:
+-needs to recognize low weights
+-high precision
+-small
+-low cost
+
+sensors to try:
+Flexiforce pressure sensor
+https://www.sparkfun.com/products/8713
+
+
+
