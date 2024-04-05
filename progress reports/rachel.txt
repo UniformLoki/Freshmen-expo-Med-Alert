@@ -1,0 +1,11 @@
+24.03.25
+Initial meeting to confirm project
+
+24.04.03
+Second brainstorming meeting
+roles assigned
+
+24.05.04
+Created branch 'at-home-edition/weight-sensor-testing'
+Created arduino code to test weight sensors
+Tested Flexiforce pressure sensor
