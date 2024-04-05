@@ -5,7 +5,10 @@ Initial meeting to confirm project
 Second brainstorming meeting
 roles assigned
 
-24.05.04
+24.04.04
 Created branch 'at-home-edition/weight-sensor-testing'
 Created arduino code to test weight sensors
 Tested Flexiforce pressure sensor
+
+24.04.05
+Created CAD models of parts for a potential sensor setup
