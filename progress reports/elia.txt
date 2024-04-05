@@ -8,3 +8,6 @@ Tested Flask on Le Potato and made proof of concept
 Started gui development
 Set up Flask
 Finished navbar
+
+4.5.2024
+Added title bar
