@@ -1,5 +1,5 @@
 //declare constants
-FORCE_SENSOR = 0;
+int FORCE_SENSOR = 4;
 
 void setup() {
 
@@ -18,7 +18,7 @@ void setup() {
     int AnalogValue = analogRead(FORCE_SENSOR);
     Serial.print("AnalogValue = ");
     Serial.println(AnalogValue);
-    delay(500);
+    delay(1500);
   }
 
 
@@ -28,13 +28,17 @@ void setup() {
   Serial.println("Please lay the sensor down flat and make sure nothing is touching it");
   Serial.println("Press any key to continue\n");
 
-  while (Serial.available == 0){
+  while (Serial.available() == 0){ //pauses code until a key is pressed
 
   }
+  Serial.read(); //clears whatever was entered in the monitor
 
   int InitialAnalogValue = analogRead(FORCE_SENSOR);
   Serial.print("Analog value with nothing on the sensor: ");
   Serial.println(InitialAnalogValue);
+
+
+  delay(500);
 
 
   //see if sensor recognizes weight of a bottle
@@ -43,9 +47,11 @@ void setup() {
   Serial.println("\nSee if sensor recognizes weight of bottle\n");
   Serial.println("Place the cup on the sensor and then press any key.\n");
 
-  while (Serial.available == 0){
+  while (Serial.available() == 0){
 
   }
+  Serial.read();
+
 
   int AnalogValueWithBottle = analogRead(FORCE_SENSOR);
 
@@ -55,8 +61,11 @@ void setup() {
 
   Serial.println("Without bottle\tWith bottle");
   Serial.print(InitialAnalogValue);
-  Serial.print("\t");
+  Serial.print("\t\t\t");
   Serial.print(AnalogValueWithBottle);
+
+
+  delay(500);
 
 
   //see if sensor can detect the weight of 
@@ -67,14 +76,19 @@ void setup() {
   Serial.println("Take the bottle off the sensor and place one pill on it");
   Serial.println("Press any key to continue\n");
 
-  while (Serial.available == 0){
+  while (Serial.available() == 0){
 
   }
+  Serial.read();
+
 
   int AnalogValOfOnePill = analogRead(FORCE_SENSOR);
 
   Serial.print("Analog value of one pill: ");
   Serial.println(AnalogValOfOnePill);
+
+
+  delay(500);
 
 
   //see if sensor can recognize when a pill is
@@ -84,28 +98,30 @@ void setup() {
   Serial.println("Put several pills in the bottle and place it on the sensor");
   Serial.println("Press any key to continue\n");
 
-  while (Serial.available == 0){
+  while (Serial.available() == 0){ 
 
   }
+  Serial.read();
 
   int AnalogValOfBottleWithPills = analogRead(FORCE_SENSOR);
 
   Serial.println("Now remove one pill from the bottle and press any key");
 
-  while (Serial.available == 0){
+  while (Serial.available() == 0){
 
   }
+  Serial.read();
 
-  int AnalogValOfBottleWithOnePillTakenOut = 
+  int AnalogValOfBottleWithOnePillTakenOut = analogRead(FORCE_SENSOR);
 
-  if(AnalogValOfBottleWithPills != InitialAnalogValue){
-    Serial.println("Bottle detected");
+  if(AnalogValOfBottleWithPills != AnalogValOfBottleWithOnePillTakenOut){
+    Serial.println("A pill was removed");
   }
 
-  Serial.println("Without bottle\tWith bottle");
-  Serial.print(InitialAnalogValue);
-  Serial.print("\t");
-  Serial.print(AnalogValueWithBottle);
+  Serial.println("With all pills\tWith one pill removed");
+  Serial.print(AnalogValOfBottleWithPills);
+  Serial.print("\t\t\t");
+  Serial.print(AnalogValOfBottleWithOnePillTakenOut);
 
 
 }
