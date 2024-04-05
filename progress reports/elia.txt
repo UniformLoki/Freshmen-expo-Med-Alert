@@ -1,0 +1,10 @@
+3.25.2024
+Met with group to brainstorm project direction
+
+4.2.2024
+Tested Flask on Le Potato and made proof of concept
+
+4.3.2024
+Started gui development
+Set up Flask
+Finished navbar
