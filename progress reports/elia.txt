@@ -11,3 +11,6 @@ Finished navbar
 
 4.5.2024
 Added title bar
+
+4.9.2024
+Outlined page content on Google Docs
