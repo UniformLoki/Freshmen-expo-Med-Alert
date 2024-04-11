@@ -12,3 +12,6 @@ Tested Flexiforce pressure sensor
 
 24.04.05
 Created CAD models of parts for a potential sensor setup
+
+24.04.11
+Tested straight bar load cell
