@@ -1,0 +1,26 @@
+Weight Sensor Test Results
+
+Testing Procedure:
+Connect sensor to Arduino
+test 1: Read data from the sensor several times and see if it gives feedback to the serial monitor
+test 2: Place a cup simulating a pill bottle on the sensor and see if it detects it
+test 3: Place a single candy (like an m&m) simulating a pill on the sensor and see if it detects it
+test 4: Place the cup on the sensor with several "pills" on it and see if it can recognize the difference in weight when one is removed
+
+
+Flexiforce:
+Outputs to serial monitor: Passed
+Detects bottle: Failed
+Detects pill: Failed
+Detects pill removal: Failed
+
+Straight Bar Load Cell
+Outputs to serial monitor: Passed
+Detects bottle: Passed
+Detects pill: Passed
+Detects pill removal: Passed
+
+*Straight bar load cell was tested using code from the site below, not the weight sensor testing code on our repository
+
+
+
