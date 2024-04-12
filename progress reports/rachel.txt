@@ -15,3 +15,6 @@ Created CAD models of parts for a potential sensor setup
 
 24.04.11
 Tested straight bar load cell
+
+24.04.12
+Calibrated load cell and documented results
