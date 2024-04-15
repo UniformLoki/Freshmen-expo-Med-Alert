@@ -22,3 +22,4 @@ Calibrated load cell and documented results
 24.04.15
 Created CAD model of custom spacer
 ordered spacers and bottle plate from prototyping lab
+started working on code to detect when a pill is removed
