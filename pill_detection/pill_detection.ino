@@ -8,6 +8,8 @@
 #define LOADCELL_DOUT_PIN  3
 #define LOADCELL_SCK_PIN  2
 
+float single_pill = 0
+
 HX711 scale;
 
 
@@ -17,12 +19,25 @@ void setup() {
 
   //set up scale
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-  scale.set_scale(calibration_factor;)
+  scale.set_scale(calibration_factor);
   scale.tare();
 
-  serial.println("Place a single pill on the scale, then press enter.")
-  serial.println("this calibrates the scale so it can recognize how many pills were removed.")
-  
+  serial.println("Place a single pill on the scale, then press enter.");
+  serial.println("this calibrates the scale so it can recognize how many pills were removed.");
+
+  while (Serial.available() == 0){} //pauses code until a key is pressed
+
+  single_pill = scale.get_units();
+  Serial.print("One pill weighs ");
+  Serial.print(single_pill, 3);
+  Serial.print(" kg"); 
+  Serial.println();
+
+  serial.println("Place the bottle of pills on the scale.")
+  serial.println("Press enter to start tracking pills")
+
+  while (Serial.available() == 0){} //pauses code until a key is pressed
+
 }
 
 void loop() {
@@ -30,9 +45,3 @@ void loop() {
 
 }
 
-}
-
-void loop() {
-  
-
-}
