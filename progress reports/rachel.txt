@@ -18,3 +18,7 @@ Tested straight bar load cell
 
 24.04.12
 Calibrated load cell and documented results
+
+24.04.15
+Created CAD model of custom spacer
+ordered spacers and bottle plate from prototyping lab
