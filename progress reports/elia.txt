@@ -14,3 +14,9 @@ Added title bar
 
 4.9.2024
 Outlined page content on Google Docs
+
+4.15.2024
+Added variable to track current amount of pills in Medication class
+Created Profile class
+Added sanitization to birthdates, emails, and phone numbers
+Started work on Profile database
