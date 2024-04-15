@@ -10,7 +10,7 @@
 
 float SinglePill = 0;
 float StartingMass = 0;
-float PRECISION = 0.001; //mass changes will be recognized if they are within +/- this number from the target
+float PRECISION = 0.005; //mass changes will be recognized if they are within +/- this number from the target
 
 HX711 scale;
 
@@ -48,6 +48,10 @@ void setup() {
 
   Serial.println("Pill tracking started");
 
+  Serial.print("The bottle currently contains ");
+  Serial.print(ceil(StartingMass / SinglePill), 0);
+  Serial.println(" pills");
+
 }
 
 void loop() {
@@ -61,15 +65,15 @@ void loop() {
   //check for pill removal
   if (MassDifference >= SinglePill - PRECISION){
 
-    int NumPillsTaken = MassDifference / SinglePill;
+    int NumPillsTaken = ceil(MassDifference / SinglePill);
     Serial.print(NumPillsTaken);
     Serial.println("pill(s) were removed");
     StartingMass = CurrentMass;
 
   }
 
-  //delay 3s between removal checks
-  delay(3000);
+  //delay 2s between removal checks
+  delay(2000);
 
 }
 
