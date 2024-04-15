@@ -9,6 +9,7 @@ class Profile:
         self.email = email
         self.phone = phone
         self.medications = []
+        self.date_added = datetime.datetime.now().strftime("%m/%d/%Y")
 
     @property
     def birthdate(self) -> str:
