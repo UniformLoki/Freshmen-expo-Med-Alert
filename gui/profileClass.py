@@ -3,7 +3,7 @@ import uuid, datetime, re
 class Profile:
 
     def __init__(self, name:str, birthdate:str, email:str=None, phone:str=None) -> None:
-        self.id = uuid.uuid4()
+        self.id = f"{uuid.uuid4()}"
         self.name = name
         self.birthdate = birthdate
         self.email = email
@@ -22,10 +22,8 @@ class Profile:
         current_time = datetime.datetime.now()
         if new_birthdate_formatted <= current_time:
             self._birthdate = new_birthdate
-            print(self._birthdate)
         else:
             self._birthdate = current_time.strftime(format)
-            print(self._birthdate)
 
     @property
     def email(self) -> str:

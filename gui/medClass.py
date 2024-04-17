@@ -1,6 +1,9 @@
+import uuid
+
 class Medication():
 
     def __init__(self, name:str, dose:str, schedule:list[str], amount:float, pill_weight:float) -> None:
+        self.id = f"{uuid.uuid4()}"
         self.name = name
         self.dose = dose
         self.full_amount = amount
