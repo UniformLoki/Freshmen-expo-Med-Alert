@@ -20,3 +20,8 @@ Added variable to track current amount of pills in Medication class
 Created Profile class
 Added sanitization to birthdates, emails, and phone numbers
 Started work on Profile database
+
+4.16.2024
+Created add/del_medication functions
+Started work on Medication database
+Realized the need to research how to permanently change the dictionaries (prolly through pickle)
