@@ -23,3 +23,7 @@ Calibrated load cell and documented results
 Created CAD model of custom spacer
 ordered spacers and bottle plate from prototyping lab
 started working on code to detect when a pill is removed
+
+24.04.18
+Merged at-home-edition/weight-sensor-test into main
+Started researching python libraries for weight sensor
