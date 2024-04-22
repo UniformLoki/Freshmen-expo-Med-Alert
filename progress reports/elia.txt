@@ -25,3 +25,7 @@ Started work on Profile database
 Created add/del_medication functions
 Started work on Medication database
 Realized the need to research how to permanently change the dictionaries (prolly through pickle)
+
+4.17.2024
+Made new sql branch
+Started work on sql overhaul
