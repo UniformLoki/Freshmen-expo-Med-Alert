@@ -8,4 +8,8 @@
 
 from constants import *
 
+#set up GPIO
+GPIO.setmode(GPIO.BCM)
 
+#instantiate scale
+scale = HX711(dout_pin=DT_PIN, pd_sck_pin=SCK_PIN)
