@@ -1,3 +1,0 @@
-meds = {
-    # "id" : MedicationObject
-}
