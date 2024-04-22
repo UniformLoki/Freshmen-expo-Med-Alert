@@ -19,3 +19,6 @@ SCK_PIN = 0
 
 #calibration
 CALIBRATION_FACTOR = 28510 #calculated in calibration.py file
+
+#range in which weight changes are recognized (g)
+TOLERANCE = 0.1
