@@ -31,3 +31,6 @@ Started researching python libraries for weight sensor
 24.04.22
 wrote python code for weight sensing
 created Solidworks assembly of at-home edition
+
+24.04.23
+created branch for testing bluetooth data transmission
