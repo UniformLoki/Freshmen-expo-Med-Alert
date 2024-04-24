@@ -7,14 +7,14 @@
 import bluetooth
 from time import localtime, asctime, sleep
 
-alert_times = []    #times for alarm to go off
+alarm_times = []    #times for alarm to go off
 
 #set up bluetooth socket
 server_socket = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
 #search for connection
 port = 1
-server_socket.bind(("",port))
+server_socket.bind(("", port))
 server_socket.listen(1)
 
 client_socket, address = server_socket.accept()

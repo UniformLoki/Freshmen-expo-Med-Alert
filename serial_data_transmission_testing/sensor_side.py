@@ -5,13 +5,15 @@
 
 import bluetooth
 
+#set up socket
 bd_address = "01:23:45:67:89:AB"
 
 port = 1
 
 socket=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-socket.connect((bd_addr, port))
+socket.connect((bd_address, port))
 
+#send data
 socket.send("hello!!")
 
 socket.close()
