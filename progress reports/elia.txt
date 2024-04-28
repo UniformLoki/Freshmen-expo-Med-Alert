@@ -29,3 +29,9 @@ Realized the need to research how to permanently change the dictionaries (prolly
 4.17.2024
 Made new sql branch
 Started work on sql overhaul
+
+4.27.2024
+Created userdata.py with SQL query functions
+Created TABLETEST.py to visualize table data
+Created sanitization.py to check inputs before entering into database
+Mapped out how information transfer is going to work, began implementation
