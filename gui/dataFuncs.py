@@ -1,3 +1,5 @@
+# DILAPIDATED
+
 from medClass import *
 from meds import *
 from profileClass import *

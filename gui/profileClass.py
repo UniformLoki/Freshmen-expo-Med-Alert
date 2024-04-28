@@ -2,13 +2,12 @@ import uuid, datetime, re
 
 class Profile:
 
-    def __init__(self, name:str, birthdate:str, email:str=None, phone:str=None) -> None:
-        self.id = f"{uuid.uuid4()}"
+    def __init__(self, profileID:int, name:str, birthdate:str, email:str=None, phone:str=None) -> None:
+        self.id = profileID
         self.name = name
         self.birthdate = birthdate
         self.email = email
         self.phone = phone
-        self.medications = []
         self.date_added = datetime.datetime.now().strftime("%m/%d/%Y")
 
     @property
@@ -41,6 +40,6 @@ class Profile:
     
     @phone.setter
     def phone(self, new_phone:str) -> None:
-        valid_phone = re.search("\([2-9][0-9]{2}\)-[0-9]{3}-[0-9]{4}", new_phone)
+        valid_phone = re.search("[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}", new_phone)
         if valid_phone:
             self._phone = new_phone

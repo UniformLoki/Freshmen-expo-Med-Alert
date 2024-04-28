@@ -1,6 +1,10 @@
 from flask import Flask, render_template, redirect
+from userdata import create_tables
 
 app = Flask(__name__)
+
+with app.app_context():
+    create_tables()
 
 @app.route('/')
 def home_page():

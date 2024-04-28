@@ -1,7 +1,6 @@
-import sqlite3, cgitb
-cgitb.enable()
+import sqlite3, os
 from flask import g
-dbFile = 'approot/appdata.db'
+dbFile = os.path.join('gui', 'appdata.db')
 
 def get_db():
     connection = g.get('db','null')
