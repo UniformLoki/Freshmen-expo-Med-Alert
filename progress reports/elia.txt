@@ -31,7 +31,11 @@ Made new sql branch
 Started work on sql overhaul
 
 4.27.2024
-Created userdata.py with SQL query functions
+Started work on userdata.py with SQL query functions
 Created TABLETEST.py to visualize table data
 Created sanitization.py to check inputs before entering into database
 Mapped out how information transfer is going to work, began implementation
+
+4.29.2024
+Finished userdata.py SQL query functions (still needs string encryption)
+Cleaned up redundant code and files post-overhaul
