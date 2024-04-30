@@ -57,4 +57,5 @@ try:
     else:
         raise ValueError('Cannot calculate mean value. Try debug mode. Variable reading:', reading)
 
-
+except:
+    print("Something went wrong")
