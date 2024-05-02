@@ -34,3 +34,10 @@ created Solidworks assembly of at-home edition
 
 24.04.23
 created branch for testing bluetooth data transmission
+
+24.04.30
+started experimenting with data transmission through flask
+
+24.05.01
+started experimenting with string encryption
+
