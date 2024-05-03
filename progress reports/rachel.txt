@@ -41,3 +41,5 @@ started experimenting with data transmission through flask
 24.05.01
 started experimenting with string encryption
 
+24.05.03
+got encryption working
