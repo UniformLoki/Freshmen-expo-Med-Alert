@@ -39,3 +39,6 @@ Mapped out how information transfer is going to work, began implementation
 4.29.2024
 Finished userdata.py SQL query functions (still needs string encryption)
 Cleaned up redundant code and files post-overhaul
+
+5.2.2024
+Tested and bugfixed all SQL query functions
