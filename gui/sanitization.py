@@ -1,9 +1,15 @@
 import datetime, re
 
-def check_birthdate(birthdate:str) -> str:
+def check_birthdate(birthdate:str|datetime.date) -> str:
     format = "%Y-%m-%d"
     current_time = datetime.datetime.now()
-    birthdate_obj = datetime.datetime.strptime(birthdate, format)
+    if isinstance(birthdate, str):
+        try:
+            birthdate_obj = datetime.datetime.strptime(birthdate, format)
+        except:
+            birthdate_obj = current_time
+    elif isinstance(birthdate, datetime.date):
+        birthdate_obj = birthdate
     if birthdate_obj <= current_time:
         return birthdate_obj
     else:

@@ -29,17 +29,31 @@ def showData(data):
 #### EDITABLE ####
 
 from flask import Flask
-from userdata import create_tables, add_profile
+from userdata import create_tables, add_profile, add_medication, get_schedule
 
 app = Flask(__name__)
 with app.app_context():
     create_tables()
+
+    # add_profile("Elia Browning", "2005-09-03", "elia.browning205@gmail.com", '601-218-9723')
+    # add_profile("Tristan Fulghum", "2004-04-10", "tlf@dummymail.com", "504-290-7703")
+
+    # add_medication(1, "Topiramate", "25mg", 90, 0.005, ["11:30 PM"])
+    # add_medication(1, "Concerta", "27mg", 30, 0.025, ["7:00 AM"])
+    # add_medication(1, "Calcium Gummy", "500mg", 100, 0.5, ["11:30 PM"])
+    # add_medication(2, "Antibiotic", "150mg", 15, 0.025, ["9:30 AM", "9:30 PM"])
+    # add_medication(2, "Allergy Meds", "1,000mg", 200, 0.025, ["9:30 AM", "9:30 PM"])
+
+    
     
 html += '<h3>Profiles:</h3>'
 showData(sql.execute("select * from Profiles"))
 html += '<br><hr><br>'
 html += '<h3>Medications:</h3>'
 showData(sql.execute('select * from Medications'))
+html += '<br><hr><br>'
+html += '<h3>Schedules:</h3>'
+showData(sql.execute('select * from Schedules'))
 html += '<br><hr><br>'
 
 #### DISPLAY ####
