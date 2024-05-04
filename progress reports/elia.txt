@@ -42,3 +42,7 @@ Cleaned up redundant code and files post-overhaul
 
 5.2.2024
 Tested and bugfixed all SQL query functions
+
+5.3.2024
+Made page mockups
+Outlined oversights pointed out BY said mockups
