@@ -2,7 +2,7 @@ from connection import get_db
 from sanitization import *
 from profileClass import Profile
 from medClass import Medication
-from encryption import encrypt, decrypt
+# from encryption import encrypt, decrypt
 import datetime
 
 # TABLES

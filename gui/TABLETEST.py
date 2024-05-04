@@ -30,7 +30,7 @@ def showData(data):
 
 from flask import Flask
 from userdata import *
-from encryption import encrypt, decrypt
+# from encryption import encrypt, decrypt
 
 app = Flask(__name__)
 with app.app_context():
