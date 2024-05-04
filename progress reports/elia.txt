@@ -1,0 +1,41 @@
+3.25.2024
+Met with group to brainstorm project direction
+
+4.2.2024
+Tested Flask on Le Potato and made proof of concept
+
+4.3.2024
+Started gui development
+Set up Flask
+Finished navbar
+
+4.5.2024
+Added title bar
+
+4.9.2024
+Outlined page content on Google Docs
+
+4.15.2024
+Added variable to track current amount of pills in Medication class
+Created Profile class
+Added sanitization to birthdates, emails, and phone numbers
+Started work on Profile database
+
+4.16.2024
+Created add/del_medication functions
+Started work on Medication database
+Realized the need to research how to permanently change the dictionaries (prolly through pickle)
+
+4.17.2024
+Made new sql branch
+Started work on sql overhaul
+
+4.27.2024
+Started work on userdata.py with SQL query functions
+Created TABLETEST.py to visualize table data
+Created sanitization.py to check inputs before entering into database
+Mapped out how information transfer is going to work, began implementation
+
+4.29.2024
+Finished userdata.py SQL query functions (still needs string encryption)
+Cleaned up redundant code and files post-overhaul

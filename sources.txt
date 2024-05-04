@@ -1,0 +1,7 @@
+Raspberry Pi Zero 2 model courtesy of Hasanain Shuja via GrabCAD
+https://grabcad.com/library/raspberry-pi-zero-2-w-1
+
+Weight sensor code uses HX711 library by gandalf15 
+https://github.com/gandalf15/HX711
+
+encryption use rsa library
