@@ -1,6 +1,6 @@
 class Medication:
 
-    def __init__(self, medID:int, profile:int, name:str, dose:str, full_amount:float, current_amount:float, pill_weight:float) -> None:
+    def __init__(self, medID:int, profile:int, name:str, dose:str, full_amount:float, current_amount:float, pill_weight:float, low:bool) -> None:
         self.id = medID
         self.profileID = profile
         self.name = name
@@ -8,3 +8,4 @@ class Medication:
         self.full_amount = full_amount
         self.current_amount = current_amount
         self.pill_weight = pill_weight
+        self.low = low
