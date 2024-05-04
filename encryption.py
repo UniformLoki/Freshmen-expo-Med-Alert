@@ -1,28 +1,12 @@
 import rsa
 
 #generate keys
-public_key, private_key = rsa.newkeys(512)
+PUBLIC_KEY, PRIVATE_KEY = rsa.newkeys(512)
 
-#create strings
-a_string = "lettuce"
-another_string = "35.5"
+def encrypt(data:str)->str:
+    """encrypt a string using a globally defined public key"""
+    return rsa.encrypt(data.encode(), PUBLIC_KEY)
 
-#encrypt
-a_string_encrypted = rsa.encrypt(a_string.encode(), public_key)
-another_string_encrypted = rsa.encrypt(another_string.encode(), public_key)
-
-#print
-print(a_string)
-print(a_string_encrypted)
-print()
-print(another_string)
-print(another_string_encrypted)
-
-print()
-
-#decrypt
-decrypted_string = rsa.decrypt(a_string_encrypted, private_key).decode()
-print(decrypted_string)
-another_decrypted_string = rsa.decrypt(another_string_encrypted, private_key).decode()
-print(another_decrypted_string)
-
+def decrypt(data:str)->str:
+    """decrypt a string using a private key"""
+    return rsa.decrypt(data, PRIVATE_KEY).decode()

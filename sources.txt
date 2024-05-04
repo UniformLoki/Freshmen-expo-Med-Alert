@@ -4,4 +4,5 @@ https://grabcad.com/library/raspberry-pi-zero-2-w-1
 Weight sensor code uses HX711 library by gandalf15 
 https://github.com/gandalf15/HX711
 
-encryption use rsa library
+Encryption use rsa library
+GUI uses Flask and sqlite3 libraries
