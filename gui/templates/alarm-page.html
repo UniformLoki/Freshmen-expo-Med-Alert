@@ -1,0 +1,24 @@
+{%extends "layout.html"%}
+
+{%block body%}
+<div class='content d-flex justify-content-center'>
+    <div id='alarm-list-cont' class='d-flex flex-column align-items-center' style='width:75%;'>
+        {%for alarm in alarms%}
+        {%if alarm == alarms[0]%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-5 mb-2'>
+        {%else%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-2 mb-2'>
+        {%endif%}
+            <div class='d-flex justify-content-between align-items-center'>
+                <i class='bi-alarm ms-4 me-4' style='font-size:80px;'></i>
+                <h1>{{alarm.time_str}}</h1>
+            </div>
+            <div class='d-flex flex-column align-items-center' style='width:50%;'>
+                <p class='m-0'>{{alarm.med.profile.name}}</p>
+                <p class='m-0'>{{alarm.med.name}}, {{alarm.med.dose}}</p>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}

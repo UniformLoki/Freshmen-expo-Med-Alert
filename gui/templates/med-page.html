@@ -1,0 +1,27 @@
+{%extends "layout.html"%}
+
+{%block body%}
+<div class='content d-flex justify-content-center'>
+    <div id='profile-list-cont' class='d-flex flex-column align-items-center' style='width:75%;'>
+        {%for med in meds%}
+        {%if med == meds[0]%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-5 mb-2'>
+        {%else%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-2 mb-2'>
+        {%endif%}
+            <div class='d-flex justify-content-between align-items-center'>
+                <i class='bi-prescription ms-4 me-4' style='font-size:60px;'></i>
+                <div class='d-flex flex-column align-items-left'>
+                    <h2>{{med.name}}<span>, {{med.dose}}</span></h2>
+                </div>
+            </div>
+            <div class='d-flex flex-column align-items-center'>
+                <p class='m-0'>9:30 AM</p> <!-- INPUT SCHEDULE-->
+                <p class='m-0'>9:30 PM</p>
+            </div>
+            <i class='bi-three-dots-vertical' style='font-size:40px;'></i>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}

@@ -2,8 +2,9 @@ from connection import get_db
 from sanitization import *
 from profileClass import Profile
 from medClass import Medication
+from alarmClass import Alarm
 # from encryption import encrypt, decrypt
-import datetime
+from datetime import datetime
 
 # TABLES
 
@@ -13,7 +14,6 @@ def create_tables():
     
     sql.execute('''CREATE TABLE IF NOT EXISTS Profiles (
                 "profileID" integer primary key autoincrement,
-                "Added" date,
                 "Name" text,
                 "Birthdate" date,
                 "Email" text,
@@ -45,32 +45,11 @@ def create_tables():
                 foreign key (profileID) references Profiles(profileID)
                 )''')
     
-    sql.execute('''CREATE TABLE IF NOT EXISTS Schedules (
-                "medID" integer primary key autoincrement,
-                "time_1" text,
-                "time_2" text,
-                "time_3" text,
-                "time_4" text,
-                "time_5" text,
-                "time_6" text,
-                "time_7" text,
-                "time_8" text,
-                "time_9" text,
-                "time_10" text,
-                "time_11" text,
-                "time_12" text,
-                "time_13" text,
-                "time_14" text,
-                "time_15" text,
-                "time_16" text,
-                "time_17" text,
-                "time_18" text,
-                "time_19" text,
-                "time_20" text,
-                "time_21" text,
-                "time_22" text,
-                "time_23" text,
-                "time_24" text
+    sql.execute('''CREATE TABLE IF NOT EXISTS Alarms (
+                "alarmID" integer primary key autoincrement,
+                "medID" integer,
+                "Time" text,
+                foreign key (medID) references Medications(medID)
                 )''')
     
 
@@ -80,14 +59,12 @@ def add_profile(name:str, birthdate:str, email:str, phone:str, paired:bool, cont
     con = get_db()
     sql = con.cursor()
 
-    added = datetime.datetime.now().strftime("%Y-%m-%d")
-
     # sanitization
     sanit_birthdate = check_birthdate(birthdate)
     sanit_email = check_email(email)
     sanit_phone = check_phone(phone)
 
-    sql.execute('INSERT INTO Profiles (Added, Name, Birthdate, Email, Phone, Paired) VALUES (?, ?, ?, ?, ?, ?)', [added, name, sanit_birthdate, sanit_email, sanit_phone, paired])
+    sql.execute('INSERT INTO Profiles (Name, Birthdate, Email, Phone, Paired) VALUES (?, ?, ?, ?, ?)', [name, sanit_birthdate, sanit_email, sanit_phone, paired])
 
     if paired:
         # get id
@@ -110,6 +87,16 @@ def get_profile(profile_id:int) -> Profile:
     sql.execute(f"SELECT * FROM Profiles WHERE profileID={profile_id}")
     profile_data = sql.fetchone()
     return Profile(*profile_data)
+
+def get_profiles() -> list[Profile]:
+    con = get_db()
+    sql = con.cursor()
+    sql.execute(f"SELECT * FROM Profiles ORDER BY Name")
+    profile_data = [list(row) for row in list(sql.fetchall())]
+    for profile in profile_data:
+        profile[2] = datetime.strptime(profile[2], "%Y-%m-%d %H:%M:%S")
+        profile[2] = datetime.strftime(profile[2], "%m/%d/%Y")
+    return [Profile(*profile) for profile in profile_data]
 
 def update_name(profile_id:int, name:str) -> None:
     con = get_db()
@@ -161,7 +148,7 @@ def del_profile(profile_id:int) -> None:
     sql.execute(f"SELECT medID FROM Medications WHERE profileID={profile_id}")
     del_ids = [tuple(x) for x in sql.fetchall()]
     for del_id in del_ids:
-        sql.execute(f'DELETE FROM Schedules WHERE medID={del_id[0]}')
+        sql.execute(f'DELETE FROM Alarms WHERE medID={del_id[0]}')
     sql.execute(f'DELETE FROM Profiles WHERE profileID={profile_id}')
     sql.execute(f"DELETE FROM Medications WHERE profileID={profile_id}")
     sql.execute(f'DELETE FROM Contacts WHERE profileID={profile_id}')
@@ -222,29 +209,26 @@ def add_medication(profile_id:int, name:str, dose:str, amount:float, pill_weight
 
     # log medication
     sql.execute('INSERT INTO Medications (profileID, Name, Dose, Full_Amount, Current_Amount, Pill_Weight, Low) VALUES (?, ?, ?, ?, ?, ?, ?)', [profile_id, name, dose, amount, amount, pill_weight, low])
-    sql.execute('INSERT INTO Schedules (time_1) VALUES (NULL)')
 
     # get id
     sql.execute('SELECT medID FROM Medications ORDER BY medID DESC LIMIT 1')
     med_id = sql.fetchone()[0]
 
     # log schedule
-    time_slot = 1
-    for i in range(24): # for all the possible time slots,
-        if i < len(schedule): # if that time slot is used,
-            # insert value
-            sql.execute(f'UPDATE Schedules SET time_{time_slot}="{schedule[i]}" WHERE medID={med_id}')
-        else: # if not,
-            # insert NULL
-            sql.execute(f'UPDATE Schedules SET time_{time_slot}=NULL WHERE medID={med_id}')
-        time_slot += 1 # next slot
+    for time in schedule:
+        sql.execute(f"INSERT INTO Alarms (medID, Time) VALUES (?,?)", [med_id, time])
     con.commit()
 
 def get_medication(med_id:int) -> Medication:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"SELECT * FROM Medications WHERE medID={med_id}")
-    med_data = sql.fetchone()
+    med_data = [x for x in list(sql.fetchone())]
+
+    profile_id = med_data[1]
+    profile = get_profile(profile_id)
+
+    med_data[1] = profile
     return Medication(*med_data)
     # med_obj = Medication(*med_data)
 
@@ -269,18 +253,18 @@ def get_medications_from_profile(profile_id:int) -> list[Medication]:
 
     # return med_objs
 
-def get_schedule(med_id:int) -> list[datetime.time]:
+def get_schedule(med_id:int) -> list[datetime]:
     con = get_db()
     sql = con.cursor()
-    sql.execute(f"SELECT * FROM Schedules WHERE medID={med_id}")
-    schedule_list = list(sql.fetchone())
-    return list(filter(lambda x: x != None, schedule_list))
+    sql.execute(f"SELECT * FROM Alarms WHERE medID={med_id}")
+    schedule_list = list(sql.fetchall())
+    return [datetime.strptime(list(alarm)[2], "%I:%M %p") for alarm in schedule_list]
 
 def update_dose(med_id:int, dose:str) -> None:
     con = get_db()
     sql = con.cursor()
-    crypt_dose = encrypt(dose)
-    sql.execute(f"UPDATE Medications SET Dose='{crypt_dose}' WHERE medID={med_id}")
+    # crypt_dose = encrypt(dose)
+    sql.execute(f"UPDATE Medications SET Dose='{dose}' WHERE medID={med_id}")
     con.commit()
 
 def update_full_amount(med_id:int, full_amount:float) -> None:
@@ -302,21 +286,11 @@ def update_current_amount(med_id:int, current_amount:float) -> None:
 def update_schedule(med_id:int, schedule:list[str]) -> None:
     con = get_db()
     sql = con.cursor()
-
     # clear existing schedule
-    for i in range(1, 25):
-        sql.execute(f"UPDATE Schedules SET time_{i}=NULL WHERE medID={med_id}")
-    
+    sql.execute(f'DELETE FROM Alarms WHERE medID={med_id}')
     # insert new one
-    time_slot = 1
-    for i in range(24): # for all the possible time slots,
-        if i < len(schedule): # if that time slot is used,
-            # insert value
-            sql.execute(f'UPDATE Schedules SET time_{time_slot}="{schedule[i]}" WHERE medID={med_id}')
-        else: # if not,
-            # insert NULL
-            sql.execute(f"UPDATE Schedules SET time_{time_slot}=NULL WHERE medID={med_id}")
-        time_slot += 1 # next slot
+    for time in schedule:
+        sql.execute(f"INSERT INTO Alarms (medID, Time) VALUES (?,?)", [med_id, time])
     con.commit()
 
 def update_pill_weight(med_id:int, pill_weight:float) -> None:
@@ -329,8 +303,17 @@ def del_medication(med_id:int) -> None:
     con = get_db()
     sql = con.cursor()
     sql.execute(f'DELETE FROM Medications WHERE medID={med_id}')
-    sql.execute(f'DELETE FROM Schedules WHERE medID={med_id}')
+    sql.execute(f'DELETE FROM Alarms WHERE medID={med_id}')
     con.commit()
+
+def get_low() -> list[Medication]|None:
+    con = get_db()
+    sql = con.cursor()
+    sql.execute('SELECT medID FROM Medications WHERE Low=True')
+    low_ids = [[*row] for row in list(sql.fetchall())]
+    if len(low_ids) > 0:
+        return [get_medication(low_id[0]) for low_id in low_ids]
+    return None
 
 
 # ALARMS
@@ -338,3 +321,33 @@ def del_medication(med_id:int) -> None:
 def get_next_alarm() -> str:
     con = get_db()
     sql = con.cursor()
+
+    # get current time
+    now = datetime.now()
+
+    # get alarms as a list of datetime objs
+    sql.execute('SELECT Time FROM Alarms')
+    compare_list = [datetime.strptime(list(alarm)[0], "%I:%M %p") for alarm in list(sql.fetchall())]
+    compare_list.sort()
+    
+    # compare which ones are upcoming,
+    # and return the first that's equal to/after the current time
+    for alarm in compare_list:
+        if now.hour < alarm.hour or (now.hour == alarm.hour and now.minute <= alarm.minute):
+            return datetime.strftime(alarm, "%I:%M %p")
+        
+def get_alarms() -> list[Alarm]:
+    con = get_db()
+    sql = con.cursor()
+
+    sql.execute('SELECT * FROM Alarms')
+    alarm_list = [list(alarm) for alarm in list(sql.fetchall())]
+
+    for alarm in alarm_list:
+        alarm[2] = datetime.strptime(alarm[2], "%I:%M %p")
+        med_id = alarm[1]
+        medication = get_medication(med_id)
+        alarm[1] = medication
+
+    alarm_list.sort(key=lambda alarm: alarm[2])  
+    return [Alarm(*alarm) for alarm in alarm_list]

@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
+.content {
+    height: 470px;
+    width: 100%;
+}
+
+.widget {
+    border-radius: 20px;
+    border: 3px solid #00ADD4;
+    background-color: rgba(0, 173, 212, .5);
+    color: white;
+    padding: 15px;
+    margin: 15px;
+}
+
+a {
+    color: inherit !important;
+}
+
 /* layout.html */
 
 #logo > h4 {
@@ -21,4 +39,26 @@
 .nav-link {
     width: fit-content;
     font-size: 20px;
+}
+
+/* home.html */
+
+#running-low-widget {
+    height: 50%;
+}
+
+#running-low-widget > div {
+    height: 80%;
+}
+
+/* alarm-page.html, profile-page.html */
+
+#alarm-list-cont, #profile-list-cont {
+    overflow-y: scroll;
+}
+
+#alarm-list-cont > .widget,
+#profile-list-cont > .widget {
+    width: 100%;
+    font-size: 18px;
 }
