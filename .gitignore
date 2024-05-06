@@ -1,3 +1,4 @@
 /encryption-env/
 /.env
 /keys.py
+/private.pem
