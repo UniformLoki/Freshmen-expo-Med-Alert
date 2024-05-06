@@ -8,7 +8,7 @@
 <div class='content d-flex flex-column align-items-center'>
     <h1 id='profile-form-header' class='mt-2'>{{function}}</h1>
     <div style='width:75%;'>
-        <form action="{{action}}" method='POST' class='widget d-flex flex-column ps-4 pe-4'>
+        <form id='profile-settings-form' action="{{action}}" method='POST' class='widget d-flex flex-column ps-4 pe-4'>
 
             {%if profile%}
             <input type='hidden' name='profile_id' value={{profile.id}}>

@@ -279,12 +279,12 @@ def get_medications_from_profile(profile_id:int) -> list[Medication]:
 
     # return med_objs
 
-def get_schedule(med_id:int) -> list[datetime]:
+def get_schedule(med_id:int) -> list[str]:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"SELECT * FROM Alarms WHERE medID={med_id}")
     schedule_list = list(sql.fetchall())
-    return [datetime.strptime(list(alarm)[2], "%I:%M %p") for alarm in schedule_list]
+    return [list(alarm)[2] for alarm in schedule_list]
 
 def update_dose(med_id:int, dose:str) -> None:
     con = get_db()

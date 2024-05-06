@@ -52,7 +52,7 @@ a {
 
 /* alarm-page.html, profile-page.html */
 
-#alarm-list-cont, #profile-list-cont {
+#alarm-list-cont, #profile-list-cont, #meds-list-cont {
     overflow-y: scroll;
 }
 
@@ -64,7 +64,7 @@ a {
 
 /* profile-form.html */
 
-form {
+#profile-settings-form {
     margin-bottom: 100px !important;
 }
 
@@ -100,4 +100,14 @@ hr {
 
 #contact-relation-other-input-lbl {
     text-align: right;
+}
+
+/* med-page.html */
+
+h2 > span {
+    font-size: 70%;
+}
+
+.input-group {
+    width: inherit !important;
 }

@@ -19,21 +19,40 @@ def alarm_page():
     alarms = get_alarms()
     return render_template('alarm-page.html', alarms=alarms)
 
-# @app.route('/meds/<int:profile_id>')
-# def meds_page(profile_id:int):
-#     meds = get_medications_from_profile(profile_id)
-#     return render_template('med-page.html', meds=meds)
-
-@app.route('/meds')
+@app.route('/meds', methods=['GET','POST'])
 def meds_page():
-    return render_template('test.html', header='Meds page')
+    profiles = get_profiles()
+    if request.method == 'POST':
+        profile_id = int(request.form['profile_id'])
+        meds = get_medications_from_profile(profile_id)
+        if len(meds) > 0:
+            schedules = {}
+            for med in meds:
+                schedules[med.id] = get_schedule(med.id)
+            return render_template('med-page.html', profiles=profiles, sel_profile=profile_id, meds=meds, schedules=schedules)
+        else:
+            return render_template('med-page.html', profiles=profiles, sel_profile=profile_id)
+    else:
+        profile_id = profiles[0].id
+        meds = get_medications_from_profile(profile_id)
+        if len(meds) > 0:
+            schedules = {}
+            for med in meds:
+                schedules[med.id] = get_schedule(med.id)
+            return render_template('med-page.html', profiles=profiles, sel_profile=profile_id, meds=meds, schedules=schedules)
+        else:
+            return render_template('med-page.html', profiles=profiles, sel_profile=profile_id)
+    
+@app.route('/new-medication')
+def new_medication():
+    pass
 
 @app.route('/profiles')
 def profile_page():
     profiles = get_profiles()
     return render_template('profile-page.html', profiles=profiles)
 
-@app.route('/new_profile', methods=['GET','POST'])
+@app.route('/new-profile', methods=['GET','POST'])
 def new_profile():
     if request.method == 'POST':
         name = request.form['name']
