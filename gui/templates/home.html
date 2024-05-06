@@ -16,7 +16,7 @@
             <h4>Running Low:</h4>
             <div class='d-flex flex-column justify-content-center align-items-left'>
                 {%if low == None%}
-                    <p style='text-align:center;'>All set!</p>
+                    <p class='lead' style='text-align:center;'>All set!</p>
                 {%else%}
                     {%for low_med in low%}
                         <p>{{low_med.profile.name}}: {{low_med.name}}</p>

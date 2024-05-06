@@ -3,6 +3,7 @@ from sanitization import *
 from profileClass import Profile
 from medClass import Medication
 from alarmClass import Alarm
+from contactClass import Contact
 # from encryption import encrypt, decrypt
 from datetime import datetime
 
@@ -15,7 +16,7 @@ def create_tables():
     sql.execute('''CREATE TABLE IF NOT EXISTS Profiles (
                 "profileID" integer primary key autoincrement,
                 "Name" text,
-                "Birthdate" date,
+                "Birthdate" text,
                 "Email" text,
                 "Phone" text,
                 "Paired" bool,
@@ -86,7 +87,10 @@ def get_profile(profile_id:int) -> Profile:
     sql = con.cursor()
     sql.execute(f"SELECT * FROM Profiles WHERE profileID={profile_id}")
     profile_data = sql.fetchone()
-    return Profile(*profile_data)
+    profile = Profile(*profile_data)
+    if profile.contact != None:
+        profile.contact = get_contact(profile.contact)
+    return profile
 
 def get_profiles() -> list[Profile]:
     con = get_db()
@@ -94,7 +98,7 @@ def get_profiles() -> list[Profile]:
     sql.execute(f"SELECT * FROM Profiles ORDER BY Name")
     profile_data = [list(row) for row in list(sql.fetchall())]
     for profile in profile_data:
-        profile[2] = datetime.strptime(profile[2], "%Y-%m-%d %H:%M:%S")
+        profile[2] = datetime.strptime(profile[2], "%Y-%m-%d")
         profile[2] = datetime.strftime(profile[2], "%m/%d/%Y")
     return [Profile(*profile) for profile in profile_data]
 
@@ -102,6 +106,13 @@ def update_name(profile_id:int, name:str) -> None:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"UPDATE Profiles SET Name='{name}' WHERE profileID={profile_id}")
+    con.commit()
+
+def update_birthdate(profile_id:int, birthdate:str) -> None:
+    con = get_db()
+    sql = con.cursor()
+    sanit_birthdate = check_birthdate(birthdate)
+    sql.execute(f"UPDATE Profiles SET Birthdate='{sanit_birthdate}' WHERE profileID={profile_id}")
     con.commit()
 
 def update_email(profile_id:int, email:str) -> None:
@@ -123,6 +134,7 @@ def update_phone(profile_id:int, phone:str) -> None:
 def update_paired(profile_id:int, paired:bool, contact_name:str|None=None, contact_relation:str|None=None, contact_email:str|None=None, contact_phone:str|None=None) -> None:
     con = get_db()
     sql = con.cursor()
+    old_profile = get_profile(profile_id)
 
     sql.execute(f"UPDATE Profiles SET Paired={paired} WHERE profileID={profile_id}")
 
@@ -136,10 +148,12 @@ def update_paired(profile_id:int, paired:bool, contact_name:str|None=None, conta
         # add contact to profile
         sql.execute(f'UPDATE Profiles SET contactID={contact_id} WHERE profileID={profile_id}')
     else:
-        # get contactID
-        sql.execute(f'SELECT contactID FROM Contacts WHERE profileID={profile_id}')
-        contact_id = sql.fetchone()[0]
-        del_contact(contact_id)
+        # if has contact, get contactID and delete
+        if old_profile.contact != 0:
+            sql.execute(f'UPDATE Profiles SET contactID=NULL WHERE profileID={profile_id}')
+            sql.execute(f'SELECT contactID FROM Contacts WHERE profileID={profile_id}')
+            contact_id = sql.fetchone()[0]
+            del_contact(contact_id)
     con.commit()
 
 def del_profile(profile_id:int) -> None:
@@ -168,10 +182,22 @@ def add_contact(profile_id:int, name:str, relation:str, email:str, phone:str) ->
     sql.execute('INSERT INTO Contacts (profileID, Name, Relation, Email, Phone) VALUES (?, ?, ?, ?, ?)', [profile_id, name, relation, sanit_email, sanit_phone])
     con.commit()
 
+def get_contact(contact_id:int) -> Contact:
+    con = get_db()
+    sql = con.cursor()
+    sql.execute(f'SELECT * FROM Contacts WHERE contactID={contact_id}')
+    return Contact(*sql.fetchone())
+
 def update_contact_name(contact_id:int, name:str) -> None:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"UPDATE Contacts SET Name='{name}' WHERE contactID={contact_id}")
+    con.commit()
+
+def update_contact_relation(contact_id:int, relation:str) -> None:
+    con = get_db()
+    sql = con.cursor()
+    sql.execute(f"UPDATE Contacts SET Relation='{relation}' WHERE contactID={contact_id}")
     con.commit()
 
 def update_contact_email(contact_id:int, email:str) -> None:

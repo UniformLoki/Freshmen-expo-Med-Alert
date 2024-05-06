@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
 .content {
-    height: 470px;
+    height: 458px;
     width: 100%;
 }
 
-.widget {
-    border-radius: 20px;
-    border: 3px solid #00ADD4;
-    background-color: rgba(0, 173, 212, .5);
-    color: white;
+.widget, .btn-info {
+    border-radius: 10px !important;
+    border: 3px solid #00ADD4 !important;
+    background-color: rgba(0, 173, 212, .5) !important;
+    color: white !important;
     padding: 15px;
     margin: 15px;
 }
@@ -17,7 +17,6 @@
 a {
     color: inherit !important;
 }
-
 /* layout.html */
 
 #logo > h4 {
@@ -61,4 +60,44 @@ a {
 #profile-list-cont > .widget {
     width: 100%;
     font-size: 18px;
+}
+
+/* profile-form.html */
+
+form {
+    margin-bottom: 100px !important;
+}
+
+input, select, #submit-btn {
+    color: #005162 !important;
+    border-radius: 10px !important;
+    border: 1.5px solid !important;
+}
+
+label {
+    font-size: 1.5rem !important;
+}
+
+hr {
+    border-radius: 10px;
+    border: 2px solid white !important;
+    width: 85%;
+    margin: 1rem auto !important;
+}
+
+#profile-form-header {
+    color: #006B81;
+}
+
+#name-input {
+    font-size: calc(1.25rem + 1.5vw) !important;
+    font-weight: 300 !important;
+}
+
+.radio-cont > input {
+    accent-color: #006B81;
+}
+
+#contact-relation-other-input-lbl {
+    text-align: right;
 }

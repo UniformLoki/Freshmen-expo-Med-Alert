@@ -1,19 +1,13 @@
 import datetime, re
 
-def check_birthdate(birthdate:str|datetime.date) -> str:
+def check_birthdate(birthdate:str) -> str:
     format = "%Y-%m-%d"
     current_time = datetime.datetime.now()
-    if isinstance(birthdate, str):
-        try:
-            birthdate_obj = datetime.datetime.strptime(birthdate, format)
-        except:
-            birthdate_obj = current_time
-    elif isinstance(birthdate, datetime.date):
-        birthdate_obj = birthdate
+    birthdate_obj = datetime.datetime.strptime(birthdate, format)
     if birthdate_obj <= current_time:
-        return birthdate_obj
+        return birthdate
     else:
-        return current_time
+        return datetime.datetime.strftime(current_time, format)
     
 def check_email(email:str) -> str|None:
     valid_email = re.search("@[a-zA-Z0-9.-]+[.]com|org|edu|cc", email)
