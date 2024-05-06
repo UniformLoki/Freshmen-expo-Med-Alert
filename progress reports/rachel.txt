@@ -47,3 +47,6 @@ got encryption working
 24.05.05
 Switched to using hx711py library for pill detection
 Successfully calibrated and tested scale with python code
+
+24.05.06
+Encryption keys are now stored in .env file 
