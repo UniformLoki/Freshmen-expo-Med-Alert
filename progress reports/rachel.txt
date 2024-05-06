@@ -43,3 +43,7 @@ started experimenting with string encryption
 
 24.05.03
 got encryption working
+
+24.05.05
+Switched to using hx711py library for pill detection
+Successfully calibrated and tested scale with python code
