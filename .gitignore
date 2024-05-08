@@ -2,3 +2,4 @@ __pycache__
 gui/__pycache__
 gui/TABLETEST.py
 /.env
+/encryption-env/
