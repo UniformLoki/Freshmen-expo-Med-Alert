@@ -1,2 +1,4 @@
 /.env
 /encryption-env/
+/pycache/
+/gui/pycache/
