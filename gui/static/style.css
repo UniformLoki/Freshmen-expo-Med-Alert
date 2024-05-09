@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
+body {
+    background-image: url('bg.jpg');
+    background-size: 100%;
+}
+
 .content {
     height: 458px;
     width: 100%;
@@ -62,13 +67,13 @@ a {
     font-size: 18px;
 }
 
-/* profile-form.html */
+/* profile-form.html, med-form.html */
 
-#profile-settings-form {
+#profile-settings-form, #med-settings-form {
     margin-bottom: 100px !important;
 }
 
-input, select, #submit-btn {
+#submit-btn, .form-input {
     color: #005162 !important;
     border-radius: 10px !important;
     border: 1.5px solid !important;
@@ -85,7 +90,7 @@ hr {
     margin: 1rem auto !important;
 }
 
-#profile-form-header {
+#profile-form-header, #med-form-header {
     color: #006B81;
 }
 

@@ -283,8 +283,24 @@ def get_schedule(med_id:int) -> list[str]:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"SELECT * FROM Alarms WHERE medID={med_id}")
-    schedule_list = list(sql.fetchall())
-    return [list(alarm)[2] for alarm in schedule_list]
+    return [list(alarm)[2] for alarm in list(sql.fetchall())]
+
+def get_formatted_schedule(med_id:int) -> list[str]:
+    schedule_list =  [datetime.strptime(alarm, "%H:%M") for alarm in get_schedule(med_id)]
+    return [datetime.strftime(alarm, "%I:%M %p") for alarm in schedule_list]
+
+def update_med_name(med_id:int, name:str) -> None:
+    con = get_db()
+    sql = con.cursor()
+    # crypt_name = encrypt(name)
+    sql.execute(f"UPDATE Medications SET Name='{name}' WHERE medID={med_id}")
+    con.commit()
+
+def update_med_profile(med_id:int, profile_id:int) -> None:
+    con = get_db()
+    sql = con.cursor()
+    sql.execute(f"UPDATE Medications SET profileID='{profile_id}' WHERE medID={med_id}")
+    con.commit()
 
 def update_dose(med_id:int, dose:str) -> None:
     con = get_db()
@@ -352,28 +368,29 @@ def get_next_alarm() -> str:
     now = datetime.now()
 
     # get alarms as a list of datetime objs
-    sql.execute('SELECT Time FROM Alarms')
-    compare_list = [datetime.strptime(list(alarm)[0], "%I:%M %p") for alarm in list(sql.fetchall())]
-    compare_list.sort()
+    sql.execute('SELECT Time FROM Alarms ORDER BY Time')
+    compare_list = [datetime.strptime(list(alarm)[0], "%H:%M") for alarm in list(sql.fetchall())]
     
     # compare which ones are upcoming,
     # and return the first that's equal to/after the current time
+
     for alarm in compare_list:
         if now.hour < alarm.hour or (now.hour == alarm.hour and now.minute <= alarm.minute):
             return datetime.strftime(alarm, "%I:%M %p")
+        else:
+            return datetime.strftime(compare_list[0], "%I:%M %p")
         
 def get_alarms() -> list[Alarm]:
     con = get_db()
     sql = con.cursor()
 
-    sql.execute('SELECT * FROM Alarms')
+    sql.execute('SELECT * FROM Alarms ORDER BY Time')
     alarm_list = [list(alarm) for alarm in list(sql.fetchall())]
 
     for alarm in alarm_list:
-        alarm[2] = datetime.strptime(alarm[2], "%I:%M %p")
+        alarm[2] = datetime.strptime(alarm[2], "%H:%M")
         med_id = alarm[1]
         medication = get_medication(med_id)
         alarm[1] = medication
 
-    alarm_list.sort(key=lambda alarm: alarm[2])  
     return [Alarm(*alarm) for alarm in alarm_list]

@@ -28,7 +28,7 @@ def meds_page():
         if len(meds) > 0:
             schedules = {}
             for med in meds:
-                schedules[med.id] = get_schedule(med.id)
+                schedules[med.id] = get_formatted_schedule(med.id)
             return render_template('med-page.html', profiles=profiles, sel_profile=profile_id, meds=meds, schedules=schedules)
         else:
             return render_template('med-page.html', profiles=profiles, sel_profile=profile_id)
@@ -43,9 +43,47 @@ def meds_page():
         else:
             return render_template('med-page.html', profiles=profiles, sel_profile=profile_id)
     
-@app.route('/new-medication')
+@app.route('/medication-settings', methods=['GET', 'POST'])
+def medication_settings():
+    if request.method == 'POST':
+        med_id = request.form['med_id']
+
+        update_med_name(med_id, request.form['name'])
+        update_med_profile(med_id, request.form['profile_id'])
+        update_dose(med_id, request.form['dose'])
+        update_pill_weight(med_id, request.form['weight'])
+        update_full_amount(med_id, request.form['amount'])
+
+        timeslots = int(request.form['timeslot_count'])
+        print(f"\n\n{timeslots}\n\n")
+        schedule = [request.form[f'timeslot-{i}'] for i in range(timeslots)]
+        update_schedule(med_id, schedule)
+            
+        return redirect(url_for('meds_page'))
+    else:
+        med_id = request.args.get('med_id')
+        med = get_medication(med_id)
+        schedule = get_schedule(med_id)
+        profiles = get_profiles()
+        return render_template('med-form.html', med=med, schedule=schedule, profiles=profiles, function='Update Medication')
+
+@app.route('/new-medication', methods=['GET', 'POST'])
 def new_medication():
-    pass
+    if request.method == 'POST':
+        name = request.form['name']
+        profile_id = request.form['profile_id']
+        dose = request.form['dose']
+        weight = request.form['weight']
+        amount = request.form['amount']
+
+        timeslots = int(request.form['timeslot_count'])
+        schedule = [request.form[f'timeslot-{i}'] for i in range(timeslots)]
+
+        add_medication(profile_id, name, dose, amount, weight, schedule)
+        return redirect(url_for('meds_page'))
+    else:
+        profiles = get_profiles()
+        return render_template('med-form.html', profiles=profiles, function='Create Medication')
 
 @app.route('/profiles')
 def profile_page():

@@ -21,7 +21,7 @@
                     {%endfor%}
                 </select>
             </form>
-            <a href='{{url_for("new_medication")}}' class='btn btn-lg btn-info text-light my-0 col-4 align-content-center'><i class='bi-plus-lg'></i> New Medication</a>
+            <a href='{{url_for("new_medication")}}' id='new-medication-btn' class='btn btn-lg btn-info text-light my-0 col-4 align-content-center'><i class='bi-plus-lg'></i> New Medication</a>
         </div>
 
         {%if meds%}
@@ -43,7 +43,7 @@
                         <p class='m-0'>{{time}}</p>
                         {%endfor%}
                     </div>
-                    <i class='bi-three-dots-vertical' style='font-size:40px;'></i>
+                    <a href='{{url_for("medication_settings", med_id=med.id)}}'><i class='bi-three-dots-vertical' style='font-size:40px;'></i></a>
                 </div>
             </div>
             {%endfor%}
