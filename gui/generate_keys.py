@@ -1,8 +1,6 @@
 #run this file to generate new encryption/decryption keys and store them in the .env file
 
-import rsa
-import os
-import dotenv
+import rsa, os, dotenv
 
 #generate keys
 public_key, private_key = rsa.newkeys(512)

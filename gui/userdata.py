@@ -4,7 +4,7 @@ from profileClass import Profile
 from medClass import Medication
 from alarmClass import Alarm
 from contactClass import Contact
-# from encryption import encrypt, decrypt
+from encryption import encrypt, decrypt
 from datetime import datetime
 
 # TABLES
@@ -230,11 +230,11 @@ def add_medication(profile_id:int, name:str, dose:str, amount:float, pill_weight
     sql = con.cursor()
 
     # encrypt
-    # crypt_name = encrypt(name)
-    # crypt_dose = encrypt(dose)
+    crypt_name = encrypt(name)
+    crypt_dose = encrypt(dose)
 
     # log medication
-    sql.execute('INSERT INTO Medications (profileID, Name, Dose, Full_Amount, Current_Amount, Pill_Weight, Low) VALUES (?, ?, ?, ?, ?, ?, ?)', [profile_id, name, dose, amount, amount, pill_weight, low])
+    sql.execute('INSERT INTO Medications (profileID, Name, Dose, Full_Amount, Current_Amount, Pill_Weight, Low) VALUES (?, ?, ?, ?, ?, ?, ?)', [profile_id, crypt_name, crypt_dose, amount, amount, pill_weight, low])
 
     # get id
     sql.execute('SELECT medID FROM Medications ORDER BY medID DESC LIMIT 1')
@@ -255,29 +255,27 @@ def get_medication(med_id:int) -> Medication:
     profile = get_profile(profile_id)
 
     med_data[1] = profile
-    return Medication(*med_data)
-    # med_obj = Medication(*med_data)
+    med_obj = Medication(*med_data)
 
-    # # decrypt
-    # med_obj.name = decrypt(med_obj.name)
-    # med_obj.dose = decrypt(med_obj.dose)
+    # decrypt
+    med_obj.name = decrypt(med_obj.name)
+    med_obj.dose = decrypt(med_obj.dose)
 
-    # return med_obj
+    return med_obj
 
 def get_medications_from_profile(profile_id:int) -> list[Medication]:
     con = get_db()
     sql = con.cursor()
     sql.execute(f"SELECT * FROM Medications WHERE profileID={profile_id}")
     med_list = sql.fetchall()
-    return [Medication(*entry) for entry in med_list]
-    # med_objs = [Medication(*entry) for entry in med_list]
+    med_objs = [Medication(*entry) for entry in med_list]
 
-    # # decrypt
-    # for obj in med_objs:
-    #     obj.name = decrypt(obj.name)
-    #     obj.dose = decrypt(obj.dose)
+    # decrypt
+    for obj in med_objs:
+        obj.name = decrypt(obj.name)
+        obj.dose = decrypt(obj.dose)
 
-    # return med_objs
+    return med_objs
 
 def get_schedule(med_id:int) -> list[str]:
     con = get_db()
@@ -292,8 +290,8 @@ def get_formatted_schedule(med_id:int) -> list[str]:
 def update_med_name(med_id:int, name:str) -> None:
     con = get_db()
     sql = con.cursor()
-    # crypt_name = encrypt(name)
-    sql.execute(f"UPDATE Medications SET Name='{name}' WHERE medID={med_id}")
+    crypt_name = encrypt(name)
+    sql.execute(f"UPDATE Medications SET Name='{crypt_name}' WHERE medID={med_id}")
     con.commit()
 
 def update_med_profile(med_id:int, profile_id:int) -> None:
@@ -305,8 +303,8 @@ def update_med_profile(med_id:int, profile_id:int) -> None:
 def update_dose(med_id:int, dose:str) -> None:
     con = get_db()
     sql = con.cursor()
-    # crypt_dose = encrypt(dose)
-    sql.execute(f"UPDATE Medications SET Dose='{dose}' WHERE medID={med_id}")
+    crypt_dose = encrypt(dose)
+    sql.execute(f"UPDATE Medications SET Dose='{crypt_dose}' WHERE medID={med_id}")
     con.commit()
 
 def update_full_amount(med_id:int, full_amount:float) -> None:

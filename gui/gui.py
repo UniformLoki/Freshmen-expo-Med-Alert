@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for
 from userdata import *
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -155,6 +156,19 @@ def profile_settings():
         profile_id = request.args.get('profile_id')
         profile = get_profile(profile_id)
         return render_template('profile-form.html', profile=profile, function='Update Profile', action=url_for('profile_settings'))
+    
+@app.route('/running-alarm/<profile_id>/<med_id>/<return_to>')
+def running_alarm(profile_id, med_id, return_to):
+    # profile_id = request.args.get('profile_id')
+    # med_id = request.args.get('med_id')
+    # return_to = request.args.get('from')
+
+    time = datetime.strftime(datetime.now(), "%I:%M %p")
+    profile = get_profile(profile_id)
+    med = get_medication(med_id)
+
+    return render_template('running-alarm.html', time=time, profile=profile, med=med, return_to=return_to)
+
 
 # run locally
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 __pycache__
 gui/__pycache__
 gui/TABLETEST.py
+gui/.env
 /.env
 /encryption-env/
