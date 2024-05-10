@@ -53,4 +53,7 @@ Encryption keys are now stored in .env file
 
 24.05.07
 added updated encryption functions to sql branch
+
+24.05.09
+fixed scale
  
