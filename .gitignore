@@ -1,5 +1,7 @@
 /.env
 /encryption-env/
 /pycache/
-/gui/pycache/
+/gui/__pycache__/
+gui/TABLETEST.py
+gui/.env
 /python_sensor_testing/__pycache__/

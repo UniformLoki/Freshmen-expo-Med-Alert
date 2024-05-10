@@ -1,0 +1,34 @@
+{%extends "layout.html"%}
+
+{%block body%}
+<div class='content d-flex justify-content-center'>
+    <div id='profile-list-cont' class='d-flex flex-column align-items-center' style='width:75%;'>
+        <a href='{{url_for("new_profile")}}' class='btn btn-lg btn-info text-light mt-4'><i class='bi-plus-lg'></i>New Profile</a>
+        {%for profile in profiles%}
+        {%if profile == profiles[0]%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-3 mb-3'>
+        {%else%}
+        <div class='widget d-flex justify-content-between align-items-center ms-0 me-0 mt-2 mb-3'>
+        {%endif%}
+            <div class='d-flex justify-content-between align-items-center'>
+                <i class='bi-heart-pulse ms-4 me-4' style='font-size:60px;'></i>
+                <div class='d-flex flex-column align-items-left'>
+                    <h2>{{profile.name}}</h2>
+                    {%if profile.paired == True%}
+                    <p class='m-0' style='font-style:italic;'>Paired Notification</p>
+                    {%else%}
+                    <p class='m-0' style='font-style:italic;'>Single Notification</p>
+                    {%endif%}
+                </div>
+            </div>
+            <div class='d-flex flex-column align-items-center'>
+                <p class='m-0'>{{profile.birthdate}}</p>
+                <p class='m-0'>{{profile.phone}}</p>
+                <p class='m-0'>{{profile.email}}</p>
+            </div>
+            <a href="{{url_for('profile_settings', profile_id=profile.id)}}"><i class='bi-three-dots-vertical' style='font-size:40px;'></i></a>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}

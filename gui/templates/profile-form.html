@@ -1,0 +1,204 @@
+{%extends "layout.html"%}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+{%block body%}
+<div class='content d-flex flex-column align-items-center'>
+    <h1 id='profile-form-header' class='mt-2'>{{function}}</h1>
+    <div style='width:75%;'>
+        <form id='profile-settings-form' action="{{action}}" method='POST' class='widget d-flex flex-column ps-4 pe-4'>
+
+            {%if profile%}
+            <input type='hidden' name='profile_id' value={{profile.id}}>
+            {%endif%}
+
+            <div id='profile-form'>
+                <div id='name-input-cont' class='d-flex justify-content-between align-items-center mb-4'>
+                    <i class='bi-heart-pulse ms-4 me-4' style='font-size:60px;'></i>
+                    {%if profile%}
+                    <input id='name-input' class='form-control' type='text' name='name' value='{{profile.name}}' required>
+                    {%else%}
+                    <input id='name-input' class='form-control' type='text' name='name' placeholder='Profile Name' required>
+                    {%endif%}
+                </div>
+
+                <div class='d-flex flex-column justify-content-between align-items-stretch'>
+
+                    <div id='birthdate-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='birthdate-input-lbl' class='form-label lead col-1' for='birthdate-input'>Birthdate:</label>
+                        {%if profile%}
+                        <input id='birthdate-input' class='form-input lead col-9 p-1' type='date' name='birthdate' value='{{profile.birthdate}}' required>
+                        {%else%}
+                        <input id='birthdate-input' class='form-input lead col-9 p-1' type='date' name='birthdate' required>
+                        {%endif%}
+                    </div>
+
+                    <div id='email-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='email-input-lbl' class='form-label lead col-1' for='email-input'>Email:</label>
+                        {%if profile%}
+                        <input id='email-input' class='form-input lead col-9 p-1' type='email' name='email' value='{{profile.email}}' required>
+                        {%else%}
+                        <input id='email-input' class='form-input lead col-9 p-1' type='email' name='email' placeholder='Ex: abc123@email.com' required>
+                        {%endif%}
+                    </div>
+
+                    <div id='phone-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='phone-input-lbl' class='form-label lead col-1' for='phone-input'>Phone:</label>
+                        {%if profile%}
+                        <input id='phone-input' class='form-input lead col-9 p-1' type='tel' pattern="[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}" name='phone' value='{{profile.phone}}' required>
+                        {%else%}
+                        <input id='phone-input' class='form-input lead col-9 p-1' type='tel' pattern="[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}" name='phone' placeholder='Ex: 555-555-5555' required>
+                        {%endif%}
+                    </div>
+
+                    <div id='paired-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='paired-input-lbl' class='form-label lead col-4' for='paired-input'>Notification Pairing:</label>
+                        <div id='paired-input' class='d-flex justify-content-evenly col-6'>
+                            {%if profile and profile.paired%}
+                            <div class='radio-cont d-flex justify-content-center align-items-center'>
+                                <label for='paired-input-y' class='me-3'>Yes</label>
+                                <input id='paired-input-y' class='form-input lead p-1' type='radio' name='paired' value="True" checked required>
+                            </div>
+                            <div class='radio-cont d-flex justify-content-center align-items-center'>
+                                <label for='paired-input-n' class='me-3'>No</label>
+                                <input id='paired-input-n' class='form-input lead p-1' type='radio' name='paired' value="False" required>
+                            </div>
+                            {%else%}
+                            <div class='radio-cont d-flex justify-content-center align-items-center'>
+                                <label for='paired-input-y' class='me-3'>Yes</label>
+                                <input id='paired-input-y' class='form-input lead p-1' type='radio' name='paired' value="True" required>
+                            </div>
+                            <div class='radio-cont d-flex justify-content-center align-items-center'>
+                                <label for='paired-input-n' class='me-3'>No</label>
+                                <input id='paired-input-n' class='form-input lead p-1' type='radio' name='paired' value="False" checked required>
+                            </div>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {%if profile and profile.contact%}
+            <div id='contact-form'>
+            {%else%}
+            <div id='contact-form' class='d-none'>
+            {%endif%}
+                <hr>
+                <h6 class='display-6 ms-4 mb-4'>Contact:</h6>
+
+                <div id='contact-name-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                    <label id='contact-name-input-lbl' class='form-label lead col-1' for='contact-name-input'>Name:</label>
+                    {%if profile and profile.contact != None%}
+                    <input id='contact-name-input' class='toggle-required form-input lead col-9 p-1' type='text' name='contact-name' value='{{profile.contact.name}}'>
+                    {%else%}
+                    <input id='contact-name-input' class='toggle-required form-input lead col-9 p-1' type='text' name='contact-name' placeholder='Contact Name'>
+                    {%endif%}
+                </div>
+
+                <div id='contact-relation-cont' class='d-flex flex-column justify-content-evenly mb-2'>
+                    <div class='d-flex justify-content-around align-items-center'>
+                        <label id='contact-relation-input-lbl' class='form-label lead col-1' for='contact-relation-input'>Relation:</label>
+                        <select id='contact-relation-input' class='form-input lead col-9 p-1' name='contact-relation'>
+                            {%if profile and profile.contact and profile.contact.relation == "Parent/Guardian"%}
+                            <option value='Parent/Guardian' selected>Parent/Guardian</option>
+                            {%else%}
+                            <option value='Parent/Guardian'>Parent/Guardian</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Child"%}
+                            <option value='Child' selected>Child</option>
+                            {%else%}
+                            <option value='Child'>Child</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Grandchild"%}
+                            <option value='Grandchild' selected>Grandchild</option>
+                            {%else%}
+                            <option value='Grandchild'>Grandchild</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Spouse"%}
+                            <option value='Spouse' selected>Spouse</option>
+                            {%else%}
+                            <option value='Spouse'>Spouse</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Roommate"%}
+                            <option value='Roommate' selected>Roommate</option>
+                            {%else%}
+                            <option value='Roommate'>Roommate</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Accountability Partner"%}
+                            <option value='Accountability Partner' selected>Accountability Partner</option>
+                            {%else%}
+                            <option value='Accountability Partner'>Accountability Partner</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation == "Nurse/Medical Professional"%}
+                            <option value='Nurse/Medical Professional' selected>Nurse/Medical Professional</option>
+                            {%else%}
+                            <option value='Nurse/Medical Professional'>Nurse/Medical Professional</option>
+                            {%endif%}
+                            {%if profile and profile.contact and profile.contact.relation not in ['Parent/Guardian', 'Child', 'Grandchild', 'Spouse', 'Roommate', 'Accountability Partner', 'Nurse/Medical Professional']%}
+                            <option value='Other' id='other-sel' selected>Other</option>
+                        </select>
+                    </div>
+                    <div id='contact-relation-other-cont' class='d-flex justify-content-around align-items-center'>
+                        <label id='contact-relation-other-input-lbl' class='form-label lead col-4' for='contact-relation-other-input'>Other:</label>
+                        <input id='contact-relation-other-input' class='form-input lead col-6 p-1' type='text' name='contact-relation-other' value='{{profile.contact.relation}}'>
+                    </div>
+                            {%else%}
+                            <option value='Other' id='other-sel'>Other</option>
+                        </select>
+                    </div>
+                    <div id='contact-relation-other-cont' class='d-none d-flex justify-content-around align-items-center'>
+                        <label id='contact-relation-other-input-lbl' class='form-label lead col-4' for='contact-relation-other-input'>Other:</label>
+                        <input id='contact-relation-other-input' class='form-input lead col-6 p-1' type='text' name='contact-relation-other'>
+                    </div>
+                            {%endif%}
+                </div>
+
+                <div id='contact-email-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                    <label id='contact-email-input-lbl' class='form-label lead col-1' for='contact-email-input'>Email:</label>
+                    {%if profile and profile.contact != None%}
+                    <input id='contact-email-input' class='toggle-required form-input lead col-9 p-1' type='email' name='contact-email' value='{{profile.contact.email}}'>
+                    {%else%}
+                    <input id='contact-email-input' class='toggle-required form-input lead col-9 p-1' type='email' name='contact-email' placeholder='Ex: abc123@email.com'>
+                    {%endif%}
+                </div>
+
+                <div id='contact-phone-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                    <label id='contact-phone-input-lbl' class='form-label lead col-1' for='contact-phone-input'>Phone:</label>
+                    {%if profile and profile.contact != None%}
+                    <input id='contact-phone-input' class='toggle-required form-input lead col-9 p-1' type='tel' pattern="[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}" name='contact-phone' value='{{profile.contact.phone}}'>
+                    {%else%}
+                    <input id='contact-phone-input' class='toggle-required form-input lead col-9 p-1' type='tel' pattern="[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}" name='contact-phone' placeholder='Ex: 555-555-5555'>
+                    {%endif%}
+                </div>
+            </div>
+
+            <button id='submit-btn' class='btn btn-lg btn-light mx-auto mt-4' type='submit'>{{function}}</button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#contact-relation-input").on('change', function(){
+        if ($(this).val() == 'Other'){
+            $('#contact-relation-other-cont').removeClass('d-none');
+            $('#contact-relation-other-input').attr('required',true);
+        } else {
+            $('#contact-relation-other-cont').addClass('d-none');
+            $('#contact-relation-other-input').attr('required',false);
+        }
+    });
+
+    $('input[type=radio][name=paired]').change(function(){
+        if ($(this).val() == "True") {
+            $('#contact-form').removeClass('d-none');
+            $('.toggle-required').attr('required',true);
+        } else if ($(this).val() == "False") {
+            $('#contact-form').addClass('d-none');
+            $('.toggle-required').attr('required',false);
+        }
+    });
+</script>
+{%endblock%}

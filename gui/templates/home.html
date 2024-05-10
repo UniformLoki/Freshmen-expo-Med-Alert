@@ -1,0 +1,27 @@
+{%extends "layout.html"%}
+
+{%block body%}
+<div class='content d-flex flex-column justify-content-center align-items-stretch w-75 mx-auto p-3'>
+    <div id='upcoming-widget' class='widget d-flex justify-content-center'>
+        <div class='d-flex flex-column'>
+            <h4 style='text-align:center;'>Upcoming<br>Alarm:</h4>
+            <h4 style='text-align:center;'>{{upcoming}}</h4>
+        </div>
+        <div class='d-flex flex-column justify-content-center align-items-center ms-3'>
+            <i class='bi-alarm' style='font-size:100px;'></i>
+        </div>
+    </div>
+    <div id='running-low-widget' class='widget'>
+        <h4 style='text-align:center;'>Running Low:</h4>
+        <div class='d-flex flex-column justify-content-center align-items-center'>
+            {%if low == None%}
+                <p class='lead' style='text-align:center;'>All set!</p>
+            {%else%}
+                {%for low_med in low%}
+                    <p>{{low_med.profile.name}}: {{low_med.name}}</p>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+</div>
+{%endblock%}

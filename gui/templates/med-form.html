@@ -1,0 +1,130 @@
+{%extends "layout.html"%}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+{%block body%}
+<div class='content d-flex flex-column align-items-center'>
+    <h1 id='med-form-header' class='mt-2'>{{function}}</h1>
+    <div style='width:75%;'>
+        <form id='med-settings-form' action="{{action}}" method='POST' class='widget d-flex flex-column ps-4 pe-4'>
+
+            <input type='hidden' id='timeslot-tracker' name='timeslot_count' value=1>
+            {%if med%}
+            <input type='hidden' name='med_id' value={{med.id}}>
+            {%endif%}
+
+            <div id='med-form'>
+
+                <div class='d-flex flex-column justify-content-between align-items-left mb-3'>
+                    <div id='name-input-cont' class='d-flex justify-content-between align-items-center mb-4'>
+                        <i class='bi-prescription ms-4 me-4' style='font-size:60px;'></i>
+                        {%if med%}
+                        <input id='name-input' class='form-control' type='text' name='name' value='{{med.name}}' required>
+                        {%else%}
+                        <input id='name-input' class='form-control' type='text' name='name' placeholder='Medication Name' required>
+                        {%endif%}
+                    </div>
+
+                    <div class='input-group ms-5 me-4'>
+                        <i class='bi-heart-pulse me-3' style='font-size:45px;'></i>
+                        <select id='profile-input' name='profile_id' class='form-input lead'>
+                            {%for profile in profiles%}
+                                {%if med and profile.id == med.profile.id%}
+                                    <option value={{profile.id}} selected>{{profile.name}}</option>
+                                {%else%}
+                                    <option value={{profile.id}}>{{profile.name}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class='d-flex flex-column justify-content-between align-items-stretch'>
+
+                    <div id='dose-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='dose-input-lbl' class='form-label lead col-3' for='dose-input'>Dose:</label>
+                        {%if med%}
+                        <input id='dose-input' class='form-input lead col-7 p-1' type='text' name='dose' value='{{med.dose}}' required>
+                        {%else%}
+                        <input id='dose-input' class='form-input lead col-7 p-1' type='text' name='dose' placeholder='Ex: 25mg' required>
+                        {%endif%}
+                    </div>
+
+                    <div id='weight-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='weight-input-lbl' class='form-label lead col-3' for='weight-input'>Dose Weight (in grams):</label>
+                        {%if med%}
+                        <input id='weight-input' class='form-input lead col-7 p-1' type='text' pattern='[0-9.]+' name='weight' value='{{med.pill_weight}}' required>
+                        {%else%}
+                        <input id='weight-input' class='form-input lead col-7 p-1' type='text' pattern='[0-9.]+' name='weight' placeholder='Ex: 0.0025' required>
+                        {%endif%}
+                    </div>
+
+                    <div id='amount-cont' class='d-flex justify-content-around align-items-center mb-2'>
+                        <label id='amount-input-lbl' class='form-label lead col-3' for='amount-input'>Doses per bottle:</label>
+                        {%if med%}
+                        <input id='amount-input' class='form-input lead col-7 p-1' type='number' name='amount' value='{{med.full_amount}}' required>
+                        {%else%}
+                        <input id='amount-input' class='form-input lead col-7 p-1' type='number' name='amount' placeholder='Ex: 100' required>
+                        {%endif%}
+                    </div>
+
+                    <hr>
+
+                    <div id='schedule-cont' class='d-flex justify-content-around mb-2'>
+                        <label class='form-label lead col-3' for='schedule-inputs'>Schedule:</label>
+                        <div class='col-7 d-flex flex-column align-items-center'>
+                            <div id='schedule-inputs' class='d-flex flex-column align-items-stretch w-100'>
+                                {%if med is not defined%}
+                                <input name='timeslot-0' type='time' class='form-input lead p-1 mb-1' style='width:91.25%;' required>
+                                {%endif%}
+                            </div>
+                            <button type='button' id='add-time-btn' class='btn btn-light form-input my-2'><i class='bi-plus'></i> Add Time</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button id='submit-btn' class='btn btn-lg btn-light mx-auto mt-4' type='submit'>{{function}}</button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        {%if med%}
+        slot_num = 0
+        {%for time in schedule%}
+        if (slot_num == 0){
+            timeslot = `<input name='timeslot-${slot_num}' type='time' class='form-input lead p-1 mb-1' style='width:91.25%;' value='{{time}}' required>`
+        } else {
+            timeslot = `<div class='d-flex justify-content-around align-items-center mb-1'><input name='timeslot-${slot_num}' type='time' class='form-input lead p-1 w-100' value='{{time}}' required><i class='bi-x-circle ms-2' style='font-size:25px;' onclick="del_timeslot(event)"></i></div>`
+        }
+        $('#schedule-inputs').append(timeslot);
+        slot_num += 1;
+        {%endfor%}
+        $('#timeslot-tracker').val(slot_num);
+        {%endif%}
+    });
+
+    $('#add-time-btn').click(function(){
+        slot_num = $('#schedule-inputs').children().length;
+        timeslot = `<div class='d-flex justify-content-around align-items-center mb-1'><input name='timeslot-${slot_num}' type='time' class='form-input lead p-1 w-100' required><i class='bi-x-circle ms-2' style='font-size:25px;' onclick="del_timeslot(event)"></i></div>`
+        $('#schedule-inputs').append(timeslot);
+        cur_timeslots = parseInt($('#timeslot-tracker').val());
+        $('#timeslot-tracker').val(cur_timeslots+1);
+    });
+
+    function del_timeslot(event){
+        clicked = event.target;
+        parent = $(clicked).parent();
+        $(parent).remove();
+        cur_timeslots = parseInt($('#timeslot-tracker').val());
+        $('#timeslot-tracker').val(cur_timeslots-1);
+    }
+</script>
+{%endblock%}

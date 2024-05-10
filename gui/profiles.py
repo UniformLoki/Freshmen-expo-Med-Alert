@@ -1,3 +1,1 @@
-profiles = {
-    # "id" : ProfileObject
-}
+from connection import get_db
