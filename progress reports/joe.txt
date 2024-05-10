@@ -14,3 +14,15 @@ Met with group to research a better system for communication, ended with descisi
 
 4.22.2024
 Met with group for first group work session.
+
+4.30.24
+workedwith flask code for wireless communication
+
+5.2.24
+got full back and forth communication between client and server working
+
+5.3.24
+Final design for pill bottle lid was achieved after 4 redesigns
+
+5.6.24
+finished polishing slideshow and began group discussion on how best to present at two tables.
